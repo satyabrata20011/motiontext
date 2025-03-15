@@ -19,18 +19,16 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title:
-    "Motion Text - Effortlessly Convert Videos and Audio into SEO-Optimized Blog Posts with AI",
-  description:
-    "Transform your videos and audio recordings into engaging, SEO-friendly blog posts in seconds with the power of AI. Fast, easy, and effective content creation made simple!",
+  title: "Motion Text - Effortlessly Convert Videos and Audio into SEO-Optimized Blog Posts with AI",
+  description: "Transform your videos and audio recordings into engaging, SEO-friendly blog posts in seconds with the power of AI.",
   icons: {
     icon: "/icon.ico",
   },
-  metadataBase: new URL(ORIGIN_URL),
-  alternates: {
-    canonical: ORIGIN_URL,
-  },
+  metadataBase: ORIGIN_URL ? new URL(ORIGIN_URL) : undefined,
+  alternates: ORIGIN_URL ? { canonical: ORIGIN_URL } : undefined,
 };
+console.log("ORIGIN_URL:", ORIGIN_URL);
+
 
 export default function RootLayout({
   children,
