@@ -10,7 +10,7 @@ import {
   transcribeUploadedFile,
 } from "@/actions/upload-actions";
 import { Loader2, Upload, Sparkles, Check } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useFormStatus } from "react-dom";
 
@@ -67,10 +67,11 @@ export default function UploadForm() {
 
   const { startUpload } = useUploadThing("videoOrAudioUploader", {
     onClientUploadComplete: () => {
-      setCurrentStep(1); // Move to transcribing step
+      console.log("✅ File upload completed.");
+      setCurrentStep(1);
     },
     onUploadError: (err) => {
-      console.error("Error occurred", err);
+      console.error("❌ Error during file upload:", err);
       toast({
         title: "Upload Failed",
         description: "Please try again",
@@ -80,14 +81,16 @@ export default function UploadForm() {
       setCurrentStep(0);
     },
     onUploadBegin: () => {
+      console.log("📤 Starting file upload...");
       setIsProcessing(true);
-      setCurrentStep(0); // Start with uploading step
+      setCurrentStep(0);
     },
   });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      console.log(`📁 File selected: ${file.name}`);
       setFile(file);
       setCurrentStep(0);
       setIsProcessing(false);
@@ -99,6 +102,7 @@ export default function UploadForm() {
     const validatedFields = schema.safeParse({ file });
 
     if (!validatedFields.success) {
+      console.warn("⚠️ Invalid file:", validatedFields.error.format());
       toast({
         title: "Invalid File",
         description: "Please upload an audio or video file under 32MB",
@@ -108,28 +112,37 @@ export default function UploadForm() {
     }
 
     try {
+      console.log("📤 Uploading file...");
       setIsProcessing(true);
-      const resp: any = await startUpload([file]);
 
+      const resp: any = await startUpload([file]);
       if (!resp) {
         throw new Error("Upload failed");
       }
 
-      setCurrentStep(1); // Move to transcribing step
-      const result = await transcribeUploadedFile(resp);
-      const { data = null, message = null } = result || {};
+      console.log("✅ Upload successful. Proceeding to transcription...");
+      setCurrentStep(1);
 
+      console.log("🎙️ Starting transcription...");
+      const result = await transcribeUploadedFile(resp);
+      console.log("📝 Transcription result:", result);
+
+      const { data = null, message = null } = result || {};
       if (!result || (!data && !message)) {
         throw new Error("Transcription failed");
       }
 
       if (data) {
-        setCurrentStep(2); // Move to generating blog post step
+        console.log("🚀 Transcription successful. Generating blog post...");
+        setCurrentStep(2);
+
         await generateBlogPostAction({
           transcriptions: data.transcriptions,
           userId: data.userId,
         });
-        setCurrentStep(3); // Move to completed step
+
+        console.log("✅ Blog post generated successfully!");
+        setCurrentStep(3);
 
         toast({
           title: "Success!",
@@ -138,6 +151,7 @@ export default function UploadForm() {
         });
       }
     } catch (error) {
+      console.error("❌ Error occurred during processing:", error);
       toast({
         title: "Error Occurred",
         description: "Please try again",
@@ -154,56 +168,27 @@ export default function UploadForm() {
   return (
     <form action={handleTranscribe} className="space-y-8">
       <div className="space-y-6">
-        <div className="flex flex-col items-center justify-center w-full">
-          <label
-            htmlFor="file"
-            className={cn(
-              "flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-xl cursor-pointer",
-              "bg-gray-50 hover:bg-gray-100 transition-colors duration-200",
-              file ? "border-orange-300" : "border-gray-300"
-            )}
-          >
-            <div className="flex flex-col items-center justify-center pt-5 pb-6 px-4">
-              <Upload
-                className={cn(
-                  "w-10 h-10 mb-3 transition-colors duration-200",
-                  file ? "text-orange-500" : "text-gray-400"
-                )}
-              />
-              <p className="mb-2 text-sm text-gray-500">
-                <span className="font-semibold">Click to upload</span>
-              </p>
-              <p className="text-xs text-gray-500">
-                Audio (MP3, WAV) or Video (MP4) up to 32MB
-              </p>
-              {file && (
-                <p className="mt-2 text-sm text-orange-600 font-medium">
-                  Selected: {file.name}
-                </p>
-              )}
-            </div>
-            <input
-              id="file"
-              name="file"
-              type="file"
-              accept="audio/*,video/*"
-              className="hidden"
-              onChange={handleFileChange}
-              required
-            />
-          </label>
-        </div>
+        <input
+          id="file"
+          name="file"
+          type="file"
+          accept="audio/*,video/*"
+          className="hidden"
+          onChange={handleFileChange}
+          required
+        />
+        {file && (
+          <p className="text-sm text-orange-600 font-medium">
+            Selected: {file.name}
+          </p>
+        )}
 
         {isProcessing && (
-          <div className="w-full py-4 bg-white rounded-lg shadow-sm border border-gray-100">
+          <div className="w-full py-4">
             <div className="max-w-md mx-auto px-4">
-              {/* Steps indicator */}
               <div className="flex justify-between mb-4">
                 {steps.map((step, idx) => (
-                  <div
-                    key={idx}
-                    className="flex flex-col items-center relative"
-                  >
+                  <div key={idx} className="flex flex-col items-center">
                     <div
                       className={cn(
                         "w-10 h-10 rounded-full flex items-center justify-center border-2 transition-colors duration-300",
@@ -220,26 +205,11 @@ export default function UploadForm() {
                         <span className="text-sm font-medium">{idx + 1}</span>
                       )}
                     </div>
-                    <div className="text-xs font-medium mt-2 text-center max-w-[70px]">
+                    <div className="text-xs font-medium mt-2">
                       {step.title}
                     </div>
                   </div>
                 ))}
-              </div>
-
-              {/* Progress bar */}
-              <div className="relative w-full h-2 bg-gray-200 rounded-full mb-4">
-                <div
-                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-500 to-amber-600 rounded-full transition-all duration-500 ease-in-out"
-                  style={{
-                    width: `${(currentStep / (steps.length - 1)) * 100}%`,
-                  }}
-                />
-              </div>
-
-              {/* Current step description */}
-              <div className="text-sm text-center text-gray-600 font-medium">
-                {steps[currentStep].description}
               </div>
             </div>
           </div>

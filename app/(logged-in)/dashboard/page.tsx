@@ -14,26 +14,35 @@ import { ArrowRight, FileText, Sparkles } from "lucide-react";
 import { redirect } from "next/navigation";
 
 export default async function Dashboard() {
+  console.log("🟢 Dashboard component loaded");
+
   try {
     // ✅ Get the logged-in user
+    console.log("🔎 Fetching Clerk user...");
     const clerkUser = await currentUser();
+    console.log("✅ Clerk user:", JSON.stringify(clerkUser, null, 2));
+
     if (!clerkUser) {
-      console.error("User not authenticated");
+      console.error("❌ User not authenticated");
       return redirect("/sign-in");
     }
 
     const email = clerkUser?.emailAddresses?.[0]?.emailAddress ?? "";
+    console.log("📧 Extracted email:", email);
+
     if (!email) {
-      console.error("User email is missing");
+      console.error("❌ User email is missing");
       return redirect("/sign-in");
     }
 
     // ✅ Establish database connection
+    console.log("🔎 Connecting to database...");
     let sql;
     try {
       sql = await getDbConnection();
+      console.log("✅ Database connection established");
     } catch (error) {
-      console.error("Database connection error:", error);
+      console.error("❌ Database connection error:", error);
       return redirect("/error");
     }
 
@@ -42,37 +51,56 @@ export default async function Dashboard() {
 
     try {
       // ✅ Check if user exists and update if needed
+      console.log("🔎 Checking if user exists...");
       const user = await doesUserExist(sql, email);
+      console.log("✅ User existence check result:", JSON.stringify(user, null, 2));
+
       if (user) {
         userId = clerkUser.id;
+        console.log("✅ User ID:", userId);
+
         if (userId) {
+          console.log("🔄 Updating user record...");
           await updateUser(sql, userId, email);
+          console.log("✅ User record updated");
         }
+
         priceId = user[0]?.price_id ?? null;
+        console.log("💰 Extracted priceId:", priceId);
       }
     } catch (error) {
-      console.error("Error checking user existence:", error);
+      console.error("❌ Error checking user existence:", error);
     }
 
     // ✅ Get plan type and set defaults
+    console.log("🔎 Resolving plan type...");
     const { id: planTypeId = "starter", name: planTypeName = "Starter" } =
       getPlanType(priceId) || {};
+    console.log("✅ Plan Type ID:", planTypeId);
+    console.log("✅ Plan Type Name:", planTypeName);
 
     const isBasicPlan = planTypeId === "basic";
     const isProPlan = planTypeId === "pro";
 
+    console.log("🔍 isBasicPlan:", isBasicPlan);
+    console.log("🔍 isProPlan:", isProPlan);
+
     let posts = [];
     try {
       if (userId) {
+        console.log("📥 Fetching posts for userId:", userId);
         posts = await sql`SELECT * FROM posts WHERE user_id = ${userId}`;
+        console.log("✅ Fetched posts:", JSON.stringify(posts, null, 2));
       }
     } catch (error) {
-      console.error("Error fetching posts:", error);
+      console.error("❌ Error fetching posts:", error);
     }
 
     const isValidBasicPlan = isBasicPlan && posts.length < 3;
+    console.log("✅ isValidBasicPlan:", isValidBasicPlan);
 
     // ✅ Render UI
+    console.log("🚀 Rendering UI...");
     return (
       <main className="w-full min-h-screen bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
         {/* Background Gradient */}
@@ -133,7 +161,7 @@ export default async function Dashboard() {
       </main>
     );
   } catch (error) {
-    console.error("Dashboard Error:", error);
+    console.error("❌ Dashboard Error:", error);
     return redirect("/error");
   }
 }
