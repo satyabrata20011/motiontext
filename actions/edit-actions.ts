@@ -5,33 +5,34 @@ import { currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function updatePostAction(data: {
+type UpdatePostParams = {
   postId: string;
   content: string;
-}) {
-  const { postId, content } = data;
+};
 
-  const user = await currentUser();
-  if (!user) {
-    redirect("/sign-in");
-  }
-
+export async function updatePostAction(
+  params: UpdatePostParams,
+  formData: FormData
+): Promise<{ success: boolean }> {
   try {
+    const { postId, content } = params;
+
+    const user = await currentUser();
+    if (!user) {
+      redirect("/sign-in");
+    }
     const sql = await getDbConnection();
 
-    const [title, ...contentParts] = content?.split("\n\n") || [];
-    const updatedTitle = title.split("#")[1].trim();
+    await sql`
+      UPDATE posts 
+      SET content = ${content}
+      WHERE id = ${postId}
+    `;
 
-    await sql`UPDATE posts SET content = ${content}, title = ${updatedTitle} where id = ${postId}`;
+    revalidatePath(`/posts/${postId}`);
+    return { success: true };
   } catch (error) {
-    console.error("Error occurred in updating the post", postId);
-    return {
-      success: false,
-    };
+    console.error("Error updating post:", error);
+    return { success: false };
   }
-
-  revalidatePath(`/posts/${postId}`);
-  return {
-    success: true,
-  };
 }

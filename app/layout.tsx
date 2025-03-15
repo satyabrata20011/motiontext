@@ -1,22 +1,28 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans as FontSans } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Header from "@/components/home/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster";
 import { ORIGIN_URL } from "@/lib/constants";
+import PageLoader from "@/components/common/page-loader";
 
-const fontSans = FontSans({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
-  variable: "--font-sans",
+  variable: "--font-plus-jakarta",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
-  title: "SpeakEasyAI Demo",
+  title:
+    "Motion Text - Effortlessly Convert Videos and Audio into SEO-Optimized Blog Posts with AI",
   description:
-    "Convert your video or voice into a Blog Post in seconds with the power of AI!",
+    "Transform your videos and audio recordings into engaging, SEO-friendly blog posts in seconds with the power of AI. Fast, easy, and effective content creation made simple!",
   icons: {
     icon: "/icon.ico",
   },
@@ -33,13 +39,9 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body
-          className={cn(
-            "min-h-screen bg-background font-sans antialiased",
-            fontSans.variable
-          )}
-        >
+      <html lang="en" className={`${plusJakarta.variable} ${inter.variable}`}>
+        <body className="min-h-screen bg-background font-plus-jakarta antialiased">
+          <PageLoader />
           <Header></Header>
           <main>{children}</main>
           <Toaster />

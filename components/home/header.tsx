@@ -12,7 +12,7 @@ const NavLink = ({
   return (
     <Link
       href={href}
-      className="transition-colors duration-200 text-gray-600 hover:text-purple-500"
+      className="transition-all duration-200 text-gray-600 hover:text-orange-600 px-4 py-2 rounded-full hover:bg-orange-50/50"
     >
       {children}
     </Link>
@@ -21,42 +21,46 @@ const NavLink = ({
 
 export default function Header() {
   return (
-    <nav className="container flex items-center justify-between px-8 py-4 mx-auto">
-      <div className="flex lg:flex-1">
-        <NavLink href="/">
-          <span className="flex items-center gap-2 shrink-0">
-            <Image
-              src="/icon.ico"
-              alt="SpeakEasy logo"
-              width={32}
-              height={32}
-              className="hover:rotate-12 transform transition duration-200 ease-in-out"
-            />
-            <span className="font-extrabold text-lg">SpeakEasy</span>
-          </span>
-        </NavLink>
-      </div>
-      <div className="flex lg:justify-center gap-2 lg:gap-12 lg:items-center">
-        <NavLink href="/#pricing">Pricing</NavLink>
-        <SignedIn>
-          <NavLink href="/posts">Your Posts</NavLink>
-        </SignedIn>
-      </div>
+    <nav className="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-orange-100/20">
+      <div className="container flex items-center justify-between px-4 lg:px-8 py-4 mx-auto">
+        <div className="flex lg:flex-1">
+          <NavLink href="/">
+            <span className="flex items-center gap-2 shrink-0">
+              <Image
+                src="/icon.ico"
+                alt="Motion Text logo"
+                width={32}
+                height={32}
+                className="hover:rotate-12 transform transition duration-200 ease-in-out"
+              />
+              <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-amber-600">
+                Motion Text
+              </span>
+            </span>
+          </NavLink>
+        </div>
 
-      <div className="flex lg:justify-end lg:flex-1">
-        <SignedIn>
-          <div className="flex gap-2 items-center">
-            <NavLink href="/dashboard">Upload a Video</NavLink>
-            {/** Profile */}
-            <UserButton />
-          </div>
-        </SignedIn>
+        <div className="hidden lg:flex lg:justify-center gap-2">
+          <NavLink href="/#pricing">Pricing</NavLink>
+          <SignedIn>
+            <NavLink href="/posts">Your Posts</NavLink>
+          </SignedIn>
+        </div>
 
-        <SignedOut>
-          <SignInButton>
-            <NavLink href="/sign-in">Sign In</NavLink>
-          </SignInButton>
-        </SignedOut>
+        <div className="flex items-center gap-4">
+          <SignedIn>
+            <NavLink href="/dashboard">Upload a Motion</NavLink>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+
+          <SignedOut>
+            <SignInButton>
+              <button className="px-6 py-2 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white font-medium hover:shadow-lg transition-all duration-200 hover:scale-105">
+                Sign In
+              </button>
+            </SignInButton>
+          </SignedOut>
+        </div>
       </div>
     </nav>
   );

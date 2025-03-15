@@ -1,45 +1,83 @@
-import { BrainIcon, MoveRight } from "lucide-react";
+import { BrainIcon } from "lucide-react";
 
 export default function HowItWorks() {
   return (
-    <section className="py-24 relative overflow-hidden">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 transform-gpu overflow-hidden blur-3xl"
-      >
-        <div
-          className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
-          style={{
-            clipPath:
-              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-          }}
-        />
+    <section
+      className="relative py-36 overflow-hidden bg-gradient-to-br from-white via-amber-50/40 to-orange-50/20"
+      id="how-it-works"
+    >
+      {/* Subtle Background Pattern */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="w-full h-full bg-[radial-gradient(circle,rgba(255,167,38,0.2)_0,rgba(255,255,255,0)_70%)]" />
       </div>
-      <div className="flex items-center justify-center w-full pb-6">
-        <h2 className="font-bold text-xl uppercase mb-8 text-purple-600">
-          How it works
-        </h2>
-      </div>
-      <h3 className="flex items-center justify-center mb-24 text-center font-bold">
-        Easily repurpose your content into SEO focused blog posts
-      </h3>
 
-      <div className="flex items-center justify-center gap-4 lg:gap-24">
-        <div className="flex flex-col gap-4">
-          <p className="text-7xl text-center">🎥</p>
-          <p className="text-center font-medium">Upload a Video</p>
-        </div>
-        <MoveRight size={64} strokeWidth={0.5} className="text-purple-500" />
-        <div className="flex flex-col gap-4">
-          <p className="flex items-center justify-center">
-            <BrainIcon size={64} strokeWidth={0.5} />
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        {/* Header */}
+        <div className="text-center space-y-5 mb-24">
+          <span className="inline-block text-sm font-semibold text-orange-600 bg-orange-50 px-4 py-2 rounded-full">
+            <span className="animate-pulse">✨</span> How It Works
+          </span>
+          <h3 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
+            Build Your Blog in{" "}
+            <span className="text-orange-600 bg-orange-100/50 px-2 py-1 rounded-md">
+              Just Three Steps
+            </span>
+          </h3>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Transform your ideas into stunning blog posts with ease.
           </p>
-          <p className="text-center font-medium">AI Magic ✨</p>
         </div>
-        <MoveRight size={64} strokeWidth={0.5} className="text-purple-500" />
-        <div className="flex flex-col gap-4">
-          <p className="text-7xl text-center">📜</p>
-          <p className="text-center font-medium">Blog</p>
+
+        {/* Steps Grid */}
+        <div className="grid md:grid-cols-3 gap-10 relative">
+          {/* Connection Lines */}
+          <div className="hidden md:block absolute top-1/3 left-1/6 right-1/6 h-1 bg-gradient-to-r from-transparent via-orange-300/50 to-transparent transform -translate-y-1/2" />
+
+          {/* Step 1 */}
+          <div className="relative group z-10">
+            <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-500 border border-orange-50 hover:border-orange-200">
+              <div className="w-14 h-14 bg-orange-50 rounded-full flex items-center justify-center mb-6 group-hover:bg-orange-100 group-hover:scale-105 transition-all duration-300">
+                <span className="text-3xl animate-bounce">🎬</span>
+              </div>
+              <h4 className="text-xl font-semibold text-gray-800 mb-3">
+                1. Submit Your Media
+              </h4>
+              <p className="text-gray-600 leading-relaxed">
+                Upload your video or audio and let our AI get to work.
+              </p>
+            </div>
+          </div>
+
+          {/* Step 2 */}
+          <div className="relative group z-10">
+            <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-500 border border-orange-50 hover:border-orange-200">
+              <div className="w-14 h-14 bg-orange-50 rounded-full flex items-center justify-center mb-6 group-hover:bg-orange-100 group-hover:scale-105 transition-all duration-300">
+                <BrainIcon className="w-7 h-7 text-orange-600 animate-pulse" />
+              </div>
+              <h4 className="text-xl font-semibold text-gray-800 mb-3">
+                2. Smart Processing
+              </h4>
+              <p className="text-gray-600 leading-relaxed">
+                Our AI crafts a captivating blog post from your content in
+                seconds.
+              </p>
+            </div>
+          </div>
+
+          {/* Step 3 */}
+          <div className="relative group z-10">
+            <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-500 border border-orange-50 hover:border-orange-200">
+              <div className="w-14 h-14 bg-orange-50 rounded-full flex items-center justify-center mb-6 group-hover:bg-orange-100 group-hover:scale-105 transition-all duration-300">
+                <span className="text-3xl animate-spin-slow">✍️</span>
+              </div>
+              <h4 className="text-xl font-semibold text-gray-800 mb-3">
+                3. Polish & Share
+              </h4>
+              <p className="text-gray-600 leading-relaxed">
+                Fine-tune your post and publish it to the world.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
