@@ -12,9 +12,9 @@ export const plansMap = [
     ],
     paymentLink: "https://buy.stripe.com/test_3cs8AbeUzgXW2Zy5kq",
     priceId:
-      process.env.NODE_ENV === "development"
+      process.env.NODE_ENV === "production"
         ? "price_1R2vIxSGsETocz7Jw81CGRik"
-        : "",
+        : "price_1R2vIxSGsETocz7Jw81CGRik",
   },
   {
     id: "pro",
@@ -29,13 +29,13 @@ export const plansMap = [
     ],
     paymentLink: "https://buy.stripe.com/test_4gwdUv13J37657G6ov",
     priceId:
-      process.env.NODE_ENV === "development"
+      process.env.NODE_ENV === "production"
         ? "price_1R2vLYSGsETocz7J3irTa9FF"
-        : "",
+        : "price_1R2vLYSGsETocz7J3irTa9FF",
   },
 ];
 
 export const ORIGIN_URL =
-  process.env.NODE_ENV === "development"
+  process.env.NODE_ENV === "production"
     ? "https://motiontext.vercel.app"
     : "https://motiontext.vercel.app";
