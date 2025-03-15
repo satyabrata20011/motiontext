@@ -6,14 +6,16 @@ export default clerkMiddleware((auth, req) => {
   if (isProtectedRoute(req)) {
     const { userId } = auth(); // Ensure auth is being called within middleware scope
     if (!userId) {
-      throw new Error("Unauthorized");
+      return new Response("Unauthorized", { status: 401 });
     }
   }
 });
 
+
 export const config = {
   matcher: [
-    "/((?!_next|.*\\..*).*)", // Match all routes except static files (_next/* or .*)
+    "/((?!_next/static|_next/image|favicon.ico).*)", // Ignore static files and Next.js internals
     "/(api|trpc)(.*)", // Match API and trpc routes
   ],
 };
+
