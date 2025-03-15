@@ -10,10 +10,10 @@ export const plansMap = [
       "Advanced Blog Content",
       "Basic Support",
     ],
-    paymentLink: "https://buy.stripe.com/test_3cs7w74fVePO1Vu5kp",
+    paymentLink: "https://buy.stripe.com/test_3cs8AbeUzgXW2Zy5kq",
     priceId:
       process.env.NODE_ENV === "development"
-        ? "price_1R1rZYSGsETocz7J4Px2oJBn"
+        ? "price_1R2vIxSGsETocz7Jw81CGRik"
         : "",
   },
   {
@@ -27,10 +27,10 @@ export const plansMap = [
       "Premium Blog Content",
       "Dedicated Support",
     ],
-    paymentLink: "https://buy.stripe.com/test_dR617JbIncHG0Rq3cg",
+    paymentLink: "https://buy.stripe.com/test_4gwdUv13J37657G6ov",
     priceId:
       process.env.NODE_ENV === "development"
-        ? "price_1R1ra1SGsETocz7JW40BLuht"
+        ? "price_1R2vLYSGsETocz7J3irTa9FF"
         : "",
   },
 ];
