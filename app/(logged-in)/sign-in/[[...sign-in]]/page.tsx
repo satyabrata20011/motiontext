@@ -13,16 +13,6 @@ export default function SignInPage() {
             footerActionLink:
               "text-orange-600 hover:text-orange-700 font-medium",
             // Target the "Secured by Clerk" branding specifically
-            footer: {
-              "& [data-testid='clerk-footer-branding']": "hidden", // Hides "Secured by Clerk"
-            },
-            // Remove Clerk logo
-            logoImage: "hidden",
-            headerTitle: "text-gray-800 text-2xl font-bold",
-            headerSubtitle: "text-gray-600",
-          },
-          layout: {
-            logoPlacement: "none",
           },
         }}
       />
