@@ -57,8 +57,10 @@ export default function Banner() {
               </Link>
             </Button>
             <Link
-              href="#how-it-works"
+              href="https://youtu.be/tvqVN_bZGqQ"
               className="flex items-center gap-2 text-gray-600 hover:text-orange-600 transition-colors duration-200 font-medium group"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               See how it works{" "}
               <ArrowRight
