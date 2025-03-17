@@ -53,7 +53,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="text-orange-600 hover:text-orange-700 transition-colors"
                 >
-                  Naga Nithin
+                  Motion Text
                 </a>{" "}
               </span>
             </div>
